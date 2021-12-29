@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整流程新增/刪除圖片</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.css">
+    <style>
+        .img-unit {
+            position: relative;
+            display: inline-block;
+        }
+        .img-unit > img {
+            width: 200px;
+        }
+        .img-unit > .del-div{
+            position:absolute;
+            right: 0;
+            top: 0;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <input id="select_file" type="file" name="myfiles[]" multiple accept="image/*">   
+    </form>
+
+    <br>
+    <button onclick="select_file.click()">上傳圖片</button>
+    <br>
+    
+    <div id="imgs">
+    <!--   
+        <div class="img-unit" data-file="9aaa6998df2caac68e111a41c6c7e8f8a6c36031.png">
+            <img src="uploaded/9aaa6998df2caac68e111a41c6c7e8f8a6c36031.png" alt="">
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>
+    
+        <div class="img-unit" data-file="a89c30f563374f775fca43fd16278de957b140fa.png">
+            <img src="uploaded/a89c30f563374f775fca43fd16278de957b140fa.png" alt="">
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>
+    -->
+    </div>
+
+<script>
+
+    const select_file = document.querySelector('#select_file');
+    const imgsDiv = document.querySelector('#imgs');
+    let imgData = [];
+
+    // 產生div
+    function imgUnitTpl(file){
+        return `<div class="img-unit" data-file="${file}">
+            <img src="uploaded/${file}" alt="">
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>`;
+    }
+
+    // 把畫面生出來
+    function renderImgs(){
+        imgsDiv.innerHTML = ''; //先清空網頁畫面
+        for(let i of imgData){
+            imgsDiv.innerHTML += imgUnitTpl(i);
+        }
+    };
+
+    // 事件處理器
+    imgsDiv.addEventListener('click',function(event){
+        const t = event.target;
+
+        // 判斷是否有點到del-icon (若不判斷，點圖片也會刪除)
+        if(t.classList.contains('del-icon')){
+
+            const filename = t.closest('.img-unit').getAttribute('data-file');
+            console.log(filename);
+            let loc = imgData.indexOf(filename);
+            if(loc!==-1){
+                imgData.splice(loc,1);   //刪除
+                renderImgs();
+            }
+        }
+    });
+
+
+    select_file.addEventListener('change', doUpload);
+
+    // submit的function
+    function doUpload(){
+        const fd = new FormData(document.form1);
+
+        fetch('upload03.php',{
+            method:'POST',
+            body:fd 
+       }).then(r=>r.json()).then(obj=>{
+           console.log(obj);
+           if(obj.success){
+           
+            // concat作陣列的串接
+            // imgData = imgData.concat(obj.files); 
+            // imgData = [...imgData, ...obj.files];
+
+            // 把陣列展開push進imgData
+            imgData.push(...obj.files);
+            
+            // 呼叫renderImgs() imgData畫面生出來
+            renderImgs();
+
+        } else{
+               alert(obj.error);
+           }
+       })
+    }
+
+    
+    
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增加刪除icon並認讀刪除到哪個檔案</title>
+    <link rel="stylesheet" href="./fontawesome/css/all.css">
+    <style>
+        .img-unit {
+            position: relative;
+            display: inline-block;
+        }
+        .img-unit > img {
+            width: 200px;
+        }
+        .img-unit > .del-div{
+            position:absolute;
+            right: 0;
+            top: 0;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <input id="select_file" type="file" name="myfiles[]" multiple accept="image/*">   
+    </form>
+
+    <br>
+    <button onclick="select_file.click()">上傳圖片</button>
+    <br>
+    
+    <div id="imgs">
+        
+        <div class="img-unit" data-file="9aaa6998df2caac68e111a41c6c7e8f8a6c36031.png">
+            <img src="uploaded/9aaa6998df2caac68e111a41c6c7e8f8a6c36031.png" alt="">
+            <!-- delete icon -->
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>
+    
+        <div class="img-unit" data-file="a89c30f563374f775fca43fd16278de957b140fa.png">
+            <img src="uploaded/a89c30f563374f775fca43fd16278de957b140fa.png" alt="">
+            <!-- delete icon -->
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>
+
+    </div>
+
+<script>
+
+    const select_file = document.querySelector('#select_file');
+    const imgsDiv = document.querySelector('#imgs');
+
+    // 產生div
+    function imgUnitTpl(file){
+        return `<div class="img-unit" data-file="${file}">
+            <img src="uploaded/${file}" alt="">
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>`;
+    }
+
+    // 事件處理器
+    // 最外層imgDivs下addEventListener
+    // 點了叉叉之後，可以知道點到的檔名是什麼
+    // closest() 往上找
+    imgsDiv.addEventListener('click',function(event){
+        const t = event.target;
+        // 從target(delete icon)往上找到class為img-unit，然後取得data-file
+        console.log(t.closest('.img-unit').getAttribute('data-file'));
+    });
+
+
+    select_file.addEventListener('change', doUpload);
+
+    // submit的function
+    function doUpload(){
+        const fd = new FormData(document.form1);
+
+        fetch('upload03.php',{
+            method:'POST',
+            body:fd 
+       }).then(r=>r.json()).then(obj=>{
+           console.log(obj);
+           if(obj.success){
+            
+            for(let file of obj.files){
+                imgsDiv.innerHTML += imgUnitTpl(file);
+            }
+            document.querySelectorAll('.img-unit').forEach(el=>{
+                    console.log(el.getAttribute('data-file'));
+            });
+
+        } else{
+               alert(obj.error);
+           }
+       })
+    }
+</script>
+
+
+</body>
+</html>

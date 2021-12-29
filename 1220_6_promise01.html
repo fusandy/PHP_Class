@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise01</title>
+</head>
+<body>
+    <script>
+        
+        new Promise((resolve, reject) =>{
+            setTimeout(function(){
+                resolve('abc');  // 正常結束
+                // reject('eeeeerrr'); // 發生例外
+            },500)
+        }).then(result => {
+            console.log(result);
+            return 123;
+        }).then(r=>{
+            console.log(r);
+        })
+        
+    </script>
+    
+    
+</body>
+</html>

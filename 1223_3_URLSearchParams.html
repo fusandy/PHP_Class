@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLSearchParams</title>
+</head>
+<body>
+
+    <script>
+        const qs1 = '?a=12&b=34';
+        const qs2 = 'c=56&d=hello';
+
+        // 解析query string
+        const u1 = new URLSearchParams(qs1);
+        const u2 = new URLSearchParams(qs2);
+
+        // 利用for of取得解析後的結果，用陣列呈現
+        // for(let i of u1){
+        //     console.log(i);
+        // }
+    
+        // console.log(u2.get('d'));  // 直接取值
+        // console.log(u1.toString()); //轉換成字串
+        // console.log(u2.toString());
+
+
+        // 建立query string
+        const u3 = new URLSearchParams({name:'mike', age:23});
+        console.log(u3.toString());
+        
+        const u4 = new URLSearchParams();
+        u4.set('hi', 'hello');
+        u4.set('id', 123);
+        console.log(u4.toString());
+
+    </script>
+    
+</body>
+</html>

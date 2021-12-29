@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上傳多個檔案並展示在網頁上</title>
+    <style>
+        .img-unit {
+            display: inline-block;
+        }
+        .img-unit > img {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <input id="select_file" type="file" name="myfiles[]" multiple accept="image/*">   
+    </form>
+
+    <!-- readonly : An HTML form with a read-only input field -->
+    <input type="text" id="data" readonly>
+    <br>
+    <button onclick="select_file.click()">上傳圖片</button>
+    <br>
+    <!-- 多張圖片呈現在以下div中 -->
+    <div id="imgs">
+        
+        <!-- function imgUnitTpl(file) return的div回傳到這裡來 -->
+
+    </div>
+
+<script>
+
+    const select_file = document.querySelector('#select_file');
+    const imgsDiv = document.querySelector('#imgs');
+
+    // 通用function，每次都會用到就寫在前面
+    // 後端處理完的 files=> [很多很多$filename] 回傳回來，return一個完整div
+    // file只是形式參數
+    function imgUnitTpl(file){
+        return `<div class="img-unit" data-file="${file}">
+            <img src="uploaded/${file}" alt="">
+        </div>`;
+    }
+
+    select_file.addEventListener('change', doUpload);
+
+    function doUpload(){
+        const fd = new FormData(document.form1);
+
+        fetch('upload03.php',{
+            method:'POST',
+            body:fd 
+       }).then(r=>r.json()).then(obj=>{
+           console.log(obj);
+           if(obj.success){
+            
+            // obj.files從upload03.php回來是一個陣列
+            // 利用for of迴圈把裡面的file裡的filename一個一個拿出來
+            // 用function imgUnitTpl(file)的指令return成div
+            // 累加完之後放進imgsDiv
+            for(let file of obj.files){
+                imgsDiv.innerHTML += imgUnitTpl(file);
+            }
+
+            // 拿到檔案 ?????
+            // getAttribute('') 拿屬性裡的資料
+            document.querySelectorAll('.img-unit').forEach(el=>{
+                console.log( el.getAttribute('data-file') )
+            });
+        } else{
+               alert(obj.error);
+           }
+       })
+    }
+</script>
+
+
+</body>
+</html>

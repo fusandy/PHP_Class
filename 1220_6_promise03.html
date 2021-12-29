@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise03</title>
+</head>
+<body>
+    <script>
+        
+        // 實際應用時，會將Promise包成一個function
+        function myPromise(a) {
+        // 隨機時間，或介在0.3~0.8秒
+        const rnd = Math.floor(300+Math.random()*500);
+            return new Promise((resolve, reject) => {
+                setTimeout(function(){
+                resolve([a*a, rnd])
+                }, rnd);
+            });
+        };
+
+
+        // 呼叫function就會拿到一個Promise物件
+        myPromise(3)
+        .then(r => {
+            console.log(r);
+            // return再呼叫一次Promise
+            return  myPromise(4);
+        }) // 所以又可以再接一個then
+        .then(r => {
+            console.log(r);
+            return  myPromise(5);
+        })
+        .then(r => {
+            console.log(r);
+        }) // 錯誤處理，有點像try/catch，但try/catch是敘述，這裡的catch是方法
+        .catch(err => {
+            // 上面中間任何過程有錯，就會進到這裡來
+            console.log(err);
+        })
+        
+    </script>
+  
+</body>
+</html>

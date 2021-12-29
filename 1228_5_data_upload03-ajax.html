@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上傳多個檔案，尚未展示在網頁上</title>
+</head>
+<body>
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <!-- 上傳多個圖片檔案 -->
+        <input id="select_file" type="file" name="myfiles[]" multiple accept="image/*">   
+    </form>
+
+    <button onclick="select_file.click()">上傳圖片</button>
+    
+    <img src="" id="myimg">
+
+<script>
+
+    const select_file = document.querySelector('#select_file');
+
+    select_file.addEventListener('change', doUpload);
+
+    function doUpload(){
+        const fd = new FormData(document.form1);
+
+        fetch('upload03.php',{
+            method:'POST',
+            body:fd 
+       }).then(r=>r.json()).then(obj=>{
+           console.log(obj);
+           if(obj.success){
+            //    document.querySelector('#myimg').src = 'uploaded/'+obj.filename;
+           } else{
+               alert(obj.error);
+           }
+       })
+    }
+</script>
+
+
+</body>
+</html>

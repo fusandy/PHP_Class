@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>傳統表單上傳多個檔案</title>
+</head>
+<body>
+    <form action="upload01.php" method="post" enctype="multipart/form-data">
+    <!-- multiple 上傳多個檔案，要告訴PHP myfiles是array -->
+    <!-- accept 限制接收什麼樣類型的檔案 -->
+    <!-- image/* 代表接收所有的image檔案類型 -->
+    <input type="file" name="myfiles[]" multiple accept="image/jpeg">
+    <input type="submit">
+    </form>    
+
+</body>
+</html>

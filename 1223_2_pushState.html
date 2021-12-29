@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pushState</title>
+</head>
+<body>
+    <div class="cont">
+        <button id="aa">aa</button>
+        <button id="bb">bb</button>
+        <button id="cc">cc</button>
+    </div>
+    
+    <script>
+        document.querySelector('.cont').addEventListener('click', event=>{
+            // 偵聽cont(currentTarget)，三個按鈕是target
+            switch(event.target.id){
+                // 如果target id = aa
+                case 'aa':
+                    history.pushState({a:1}, '', '/aa');
+                    break;
+                // 如果target id = bb
+                case 'bb':
+                    history.pushState({b:2}, '', '/bb?b=10');
+                    break;
+                // 如果target id = cc
+                case 'cc':
+                    history.pushState({c:3}, '', '/cc/cc');
+                    break;
+            }
+        });
+
+        // popState
+        window.addEventListener('popstate', event => {
+            console.log(event.state);
+            console.log(location.href);
+        })
+    
+    
+    </script>
+    
+</body>
+</html>

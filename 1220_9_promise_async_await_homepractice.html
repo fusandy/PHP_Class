@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise async await Home Practice</title>
+</head>
+<body>
+
+    <button onclick="test()">TEST</button>
+    <script>
+
+        // 問題起源: 非同步的程式
+        // 預期效果: 延遲2秒鐘，然後作加法，最後把加法結果印出來
+        
+/*        function delayedadd(n1,n2,delayTime){
+            setTimeout(function(){
+                return n1+n2;
+            }, delayTime);
+        }
+        
+        function test(){
+            let result = delayedadd(3,4,2000);
+            console.log(result);
+        }
+*/
+
+        // Promise
+        // 處理callback function非同步程式
+/*        function delayedadd(n1,n2,delayTime){
+            return new Promise(function(resolve,reject){
+                setTimeout(function(){
+                resolve (n1+n2);
+                }, delayTime);
+            });                  
+        };
+        
+        function test(){
+            let promise = delayedadd(3,4,2000);
+            promise.then(function(result){
+                console.log(result);
+            });
+        };
+*/
+
+        // async await
+        // 簡化Promise語法
+        function delayedadd(n1,n2,delayTime){
+            return new Promise(function(resolve,reject){
+                setTimeout(function(){
+                resolve (n1+n2);
+                }, delayTime);
+            });                  
+        };
+        
+        async function test(){
+            let result = await delayedadd(3,4,2000);
+                console.log(result);
+            };
+
+
+
+    </script>
+</body>
+</html>

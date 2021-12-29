@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上傳一個檔案使用 input下addEventListener</title>
+</head>
+<body>
+    <!-- 隱藏表單 -->
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <input id="select_file" type="file" name="myfile" accept="image/*">   
+    </form>
+
+    <!-- button設定事件偵聽器 -->
+    <button onclick="select_file.click()">上傳圖片</button>
+    
+    <img src="" id="myimg">
+
+<script>
+    
+
+    const select_file = document.querySelector('#select_file');
+
+    // 事件改變 change
+    // 如果偵聽到檔案有改變，就做doUpload
+    select_file.addEventListener('change', doUpload);
+
+    function doUpload(){
+        const fd = new FormData(document.form1);
+
+        fetch('upload02.php',{
+            method:'POST',
+            body:fd 
+       }).then(r=>r.json()).then(obj=>{
+           if(obj.success){
+               document.querySelector('#myimg').src = 'uploaded/'+obj.filename;
+           } else{
+               alert(obj.error);
+           }
+       })
+    }
+</script>
+
+
+</body>
+</html>

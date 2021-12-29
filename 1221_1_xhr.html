@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xhr sleep</title>
+</head>
+<body>
+    <input type="text">
+    <button>test</button>
+    <button onclick="sendData()">start</button>
+    <div id="info"></div>
+    
+    <script>
+
+    // sleep與同步false，非同步true兩者之間的關係
+    function sendData(){
+        
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+            document.querySelector('#info').innerHTML = xhr.responseText;
+        }
+        xhr.open('GET', `1221_1_sleep.php`,true);
+        // 預設是true = 非同步
+        xhr.send();
+    }
+ 
+    </script>
+</body>
+</html>
+
+
+    
