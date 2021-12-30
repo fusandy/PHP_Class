@@ -27,20 +27,24 @@ if(!empty($_FILES['myfiles']) and !empty($_FILES['myfiles']['name'])){
     // foreach (iterable_expression as $key => $value){
     //     statement
     // };
+
+    // myfiles[]且name不是空，就跑迴圈
+
     foreach($_FILES['myfiles']['name'] as $i=>$name){
         // $ext 拿到的是陣列
-        $ext = $exts[$_FILES['myfiles']['type'][$i]] ?? ''; 
+        $ext = $exts[$_FILES['myfiles']['type'][$i]] ?? '';   // 判斷副檔名
         
+        // 如果副檔名符合不是empty
         if(! empty($ext)){      
-            $filename = sha1($name. rand()).$ext;  
+            $filename = sha1($name. rand()).$ext;   // 檔名跑sha1，且把$ext副檔名加回來
 
-            $target = $upload_folder.'/'.$filename;    
+            $target = $upload_folder.'/'.$filename;     // 確定好目標路徑
     
             if(move_uploaded_file($_FILES['myfiles']['tmp_name'][$i],$target)){
                 $output['success'] ++;
                 $output['files'][] = $filename;    //push檔名進去files=[]
             }else{
-                // $output['error']='無法移動檔案';
+                $output['error']='無法移動檔案';
             }
         } else {   
             // $output['error']='不符合圖片檔案類型';
@@ -50,6 +54,8 @@ if(!empty($_FILES['myfiles']) and !empty($_FILES['myfiles']['name'])){
     $output['error']='沒有上傳檔案';
 }
 
+// 最後用JSON_encode把$output編碼打包送回去前端
+// JSON_UNESCAPED_UNICODE 只為了人類看 (ex. 中文字不會是編碼)
 echo json_encode($output, JSON_UNESCAPED_UNICODE);
 
 

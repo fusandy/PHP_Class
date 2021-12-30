@@ -24,10 +24,13 @@
 </head>
 <body>
     <form name="form1" onsubmit="return false;" style="display: none;">
+        <!-- input type="file"沒辦法下CSS -->
         <input id="select_file" type="file" name="myfiles[]" multiple accept="image/*">   
     </form>
 
     <br>
+    <!-- 利用button onclick去執行觸發id="select_file"的input被click的動作 -->
+    <!-- input很醜，所以用button+CSS屬性可以美化上傳的介面 -->
     <button onclick="select_file.click()">上傳圖片</button>
     <br>
     
@@ -55,7 +58,8 @@
     const imgsDiv = document.querySelector('#imgs');
     let imgData = [];
 
-    // 產生div
+    // 自動產生div
+    // 把檔名丟進來就能產生對應的div模板
     function imgUnitTpl(file){
         return `<div class="img-unit" data-file="${file}">
             <img src="uploaded/${file}" alt="">
@@ -65,42 +69,55 @@
         </div>`;
     }
 
-    // 把畫面生出來
+    // 把imgData中的file一個一個拿出來
+    // 呼叫 imgUnitTpl(file) 生出div
+    // 再把所有畫面放回imgsDiv innerHTML
     function renderImgs(){
         imgsDiv.innerHTML = ''; //先清空網頁畫面
-        for(let i of imgData){
-            imgsDiv.innerHTML += imgUnitTpl(i);
+        for(let file of imgData){
+            imgsDiv.innerHTML += imgUnitTpl(file);
         }
     };
 
-    // 事件處理器
+    // 事件處理器:偵測delete icon，刪除圖片重新整理
+    // 偵測最高層的imgDiv，寫一次就好，就不用綁定每個delete-icon   
     imgsDiv.addEventListener('click',function(event){
         const t = event.target;
 
-        // 判斷是否有點到del-icon (若不判斷，點圖片也會刪除)
+        // 只要點到imgDivs，就會判斷是不是有點到del-icon
         if(t.classList.contains('del-icon')){
-
+            // 如果有點到del-icon，就去找點到的檔名，存在filename的變數裡面
             const filename = t.closest('.img-unit').getAttribute('data-file');
             console.log(filename);
+            // 如果imgData陣列裡面有這個檔名
+            // array.indexOf() -> 回傳位置(索引值)
             let loc = imgData.indexOf(filename);
+            // -1 代表找不到index
             if(loc!==-1){
-                imgData.splice(loc,1);   //刪除
+                // 刪除
+                imgData.splice(loc,1);   //array.splice(索引值,刪幾個)
+                // 刪除後得到新的陣列，重新整理imgData
                 renderImgs();
             }
         }
     });
 
 
+    // 在input id="select_file"身上綁定一個事件
+    // 當input被改變的時候，執行doUpload的動作
     select_file.addEventListener('change', doUpload);
 
     // submit的function
     function doUpload(){
+        // 把表單資料做成變數 fd
         const fd = new FormData(document.form1);
 
+        // 用fetch的方式傳到upload03，表單資料fd放在body裡面
         fetch('upload03.php',{
             method:'POST',
-            body:fd 
+            body:fd  
        }).then(r=>r.json()).then(obj=>{
+           // JSON資料傳過來，JSON Parse解析成物件
            console.log(obj);
            if(obj.success){
            
