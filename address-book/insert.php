@@ -61,7 +61,7 @@ $pageName = 'insert';
                                 <div class="form-text"></div>
                             </div>
                             <!-- 表單內只要有button標籤，預設的type不寫都會是submit，資料沒填完都會送出資料，要改成type="button"才不會傳送資料 -->
-                            <button type="su  bmit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>
