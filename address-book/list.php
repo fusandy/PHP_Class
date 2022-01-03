@@ -150,6 +150,7 @@ $pageName = 'list';
     </div>
 <?php include __DIR__.'/parts/__scripts.php' ?>
     <script>
+        // sid的形式參數為上方假連結function中的PHP sid值
         function delete_it(sid){
             if(confirm(`確定要刪除第${sid}筆的資料嗎?`)){
                 // 如果是true，連到delete.php並傳送sid編號刪除資料

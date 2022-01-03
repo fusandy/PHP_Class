@@ -139,7 +139,7 @@ $pageName = 'insert';
                 body:fd,
             }).then(r=>r.json())   //PHP的關聯式陣列用JSON轉換會成為Javascript的物件
             .then(obj=>{
-                console.log(obj);  //結果會回傳回'insert_api.php'
+                console.log(obj);  
                 if(obj.success){
                     alert('新增成功'); 
                     location.href='list.php';  // 新增成功後跳轉回list.php
