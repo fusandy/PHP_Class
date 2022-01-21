@@ -132,6 +132,7 @@ $pageName = 'insert';
         // 傳送資料
         if(isPass){
             const fd = new FormData(document.form1); 
+            console.log(fd);
             // 定義一個變數去接收取得form1內的資料
 
             fetch('insert_api.php', {
